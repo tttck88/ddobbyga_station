@@ -1,15 +1,13 @@
 package com.example.dobbyga_station.config;
 
-import com.example.dobbyga_station.domain.User;
-import com.example.dobbyga_station.domain.UserDetail;
-import com.example.dobbyga_station.service.UserDetailServiceImpl;
+import com.example.dobbyga_station.user.domain.UserDetail;
+import com.example.dobbyga_station.user.service.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RequiredArgsConstructor

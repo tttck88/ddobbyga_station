@@ -1,6 +1,6 @@
 package com.example.dobbyga_station.utils;
 
-import com.example.dobbyga_station.domain.User;
+import com.example.dobbyga_station.user.domain.User;
 import io.jsonwebtoken.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

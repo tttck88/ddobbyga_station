@@ -1,10 +1,9 @@
-package com.example.dobbyga_station.service;
+package com.example.dobbyga_station.user.service;
 
-import com.example.dobbyga_station.domain.User;
-import com.example.dobbyga_station.domain.UserDetail;
+import com.example.dobbyga_station.user.domain.UserDetail;
 import com.example.dobbyga_station.exception.CustomException;
 import com.example.dobbyga_station.exception.ErrorResult;
-import com.example.dobbyga_station.repository.UserRepository;
+import com.example.dobbyga_station.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;

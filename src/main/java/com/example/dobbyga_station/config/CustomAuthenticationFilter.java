@@ -1,6 +1,6 @@
 package com.example.dobbyga_station.config;
 
-import com.example.dobbyga_station.domain.User;
+import com.example.dobbyga_station.user.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

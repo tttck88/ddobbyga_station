@@ -1,9 +1,7 @@
-package com.example.dobbyga_station.controller;
+package com.example.dobbyga_station.user.controller;
 
-import com.example.dobbyga_station.constants.AuthConstants;
-import com.example.dobbyga_station.domain.*;
-import com.example.dobbyga_station.service.UserService;
-import lombok.Getter;
+import com.example.dobbyga_station.user.domain.*;
+import com.example.dobbyga_station.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,11 @@ public class UserController {
 	@PatchMapping(value = "/api/user/update")
 	ResponseEntity<UserResponse> updateUser(@RequestBody @Valid final UserUpdateRequest userUpdateRequest) {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userUpdateRequest));
+	}
+
+	@PatchMapping(value = "/api/user/updatePassword")
+	ResponseEntity<UserResponse> updateUserPassWord(@RequestBody @Valid final UserUpdateRequest userUpdateRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserPassWord(userUpdateRequest));
 	}
 
 	@PostMapping(value = "/api/user/login")

@@ -1,10 +1,10 @@
-package com.example.dobbyga_station.service;
+package com.example.dobbyga_station.user.service;
 
-import com.example.dobbyga_station.domain.*;
-import com.example.dobbyga_station.enums.UserRole;
+import com.example.dobbyga_station.user.domain.*;
+import com.example.dobbyga_station.user.enums.UserRole;
 import com.example.dobbyga_station.exception.CustomException;
 import com.example.dobbyga_station.exception.ErrorResult;
-import com.example.dobbyga_station.repository.UserRepository;
+import com.example.dobbyga_station.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,6 +34,11 @@ class UserServiceTest {
 	final String name = "한정택";
 	final int phoneNum = 123456789;
 	final UserRole role = UserRole.ROLE_ADMIN;
+	final Address address = Address.builder()
+		.city("인천")
+		.street("용종로")
+		.zipCode("400-000")
+		.build();
 
 	private UserRequest userRequest() {
 		return UserRequest.builder()
@@ -52,6 +57,7 @@ class UserServiceTest {
 			.name(name)
 			.phoneNum(phoneNum)
 			.role(role)
+			.address(address)
 			.build();
 	}
 
@@ -62,6 +68,7 @@ class UserServiceTest {
 			.name(name)
 			.phoneNum(phoneNum)
 			.role(role)
+			.address(address)
 			.build();
 	}
 
@@ -73,6 +80,7 @@ class UserServiceTest {
 			.name(name)
 			.phoneNum(phoneNum)
 			.role(role)
+			.address(address)
 			.build();
 	}
 
@@ -169,4 +177,47 @@ class UserServiceTest {
 		assertThat(result).isNotNull();
 		assertThat(result.getEmail()).isEqualTo(email);
 	}
+	
+	@Test
+	public void 회원패스워드찾기실패_존재하지않음() {
+	    // given
+		doReturn(Optional.empty()).when(userRepository).findByEmail(email);
+	    
+	    // when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> target.findPassword(email));
+
+		// then
+		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.User_NOT_FOUND);
+	}
+	
+	@Test
+	public void 패스워드찾기성공() {
+	    // given
+		doReturn(Optional.of(User.builder().email(email).name(name).build())).when(userRepository).findByEmail(email);
+	    
+	    // when
+		target.findPassword(email);
+	    
+	    // then
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

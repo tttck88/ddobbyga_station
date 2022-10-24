@@ -1,8 +1,7 @@
-package com.example.dobbyga_station.domain;
+package com.example.dobbyga_station.user.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Delegate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

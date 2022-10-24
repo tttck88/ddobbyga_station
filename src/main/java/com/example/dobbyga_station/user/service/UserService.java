@@ -1,9 +1,9 @@
-package com.example.dobbyga_station.service;
+package com.example.dobbyga_station.user.service;
 
-import com.example.dobbyga_station.domain.*;
+import com.example.dobbyga_station.user.domain.*;
 import com.example.dobbyga_station.exception.CustomException;
 import com.example.dobbyga_station.exception.ErrorResult;
-import com.example.dobbyga_station.repository.UserRepository;
+import com.example.dobbyga_station.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final BCryptPasswordEncoder passwordEncoder;
 
 	@Transactional
 	public UserResponse registerUser(final UserRegisterRequest userRegisterRequest) {
@@ -28,7 +27,7 @@ public class UserService {
 
 		final User user = User.builder()
 			.email(userRegisterRequest.getEmail())
-			.pw(passwordEncoder.encode(userRegisterRequest.getPw()))
+			.pw(new BCryptPasswordEncoder().encode(userRegisterRequest.getPw()))
 			.name(userRegisterRequest.getName())
 			.phoneNum(userRegisterRequest.getPhoneNum())
 			.role(userRegisterRequest.getRole())
@@ -48,6 +47,20 @@ public class UserService {
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
 		User user = userRepository.findByEmail(userUpdateRequest.getEmail())
 			.map(u -> u.updateUser(userUpdateRequest))
+			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+
+		return UserResponse.builder()
+			.id(user.getId())
+			.email(user.getEmail())
+			.name(user.getName())
+			.phoneNum(user.getPhoneNum())
+			.role(user.getRole())
+			.build();
+	}
+
+	public UserResponse updateUserPassWord(UserUpdateRequest userUpdateRequest) {
+		User user = userRepository.findByEmail(userUpdateRequest.getEmail())
+			.map(u -> u.UpdateUserPassWord(new BCryptPasswordEncoder().encode(userUpdateRequest.getPw())))
 			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
 
 		return UserResponse.builder()
@@ -82,5 +95,34 @@ public class UserService {
 				.role(u.getRole())
 				.build())
 			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+	}
+
+	public void findPassword(String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+
+		// 새로운패스워드생성
+		String newPw = makeRandomPw();
+
+		// 패스워드수정
+		updateUserPassWord(UserUpdateRequest.builder()
+			.email(email)
+			.pw(newPw)
+			.build());
+
+		// 수정된패스워드전송
+		sendNewPwToEmail(email, user.getName() ,newPw);
+	}
+
+	private String makeRandomPw() {
+		// todo 랜덤문자열 생성
+		return "newPw";
+	}
+
+	private void sendNewPwToEmail(String email, String name, String newPw) {
+		// todo 이메일 전송
+		System.out.println("email = " + email);
+		System.out.println("name = " + name);
+		System.out.println("newPw = " + newPw);
 	}
 }

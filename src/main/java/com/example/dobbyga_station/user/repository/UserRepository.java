@@ -1,6 +1,6 @@
-package com.example.dobbyga_station.repository;
+package com.example.dobbyga_station.user.repository;
 
-import com.example.dobbyga_station.domain.User;
+import com.example.dobbyga_station.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package com.example.dobbyga_station.domain;
+package com.example.dobbyga_station.user.domain;
 
-import com.example.dobbyga_station.enums.UserRole;
+import com.example.dobbyga_station.user.enums.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +28,6 @@ public class UserRegisterRequest {
 
 	@NotNull
 	private final int phoneNum;
+
+	private final Address address;
 }

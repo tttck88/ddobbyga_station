@@ -1,6 +1,6 @@
-package com.example.dobbyga_station.domain;
+package com.example.dobbyga_station.user.domain;
 
-import com.example.dobbyga_station.enums.UserRole;
+import com.example.dobbyga_station.user.enums.UserRole;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,13 +18,12 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(name = "item_id", nullable = false)
 	private Long id;
 
 	@Column(nullable = false, unique = true)
 	private String email;
 
-//	@Column(nullable = false)
 	private String pw;
 
 	@Column(nullable = false)
@@ -36,6 +35,9 @@ public class User {
 	@Column(nullable = false)
 	private int phoneNum;
 
+	@Embedded
+	private Address address;
+
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
@@ -46,10 +48,14 @@ public class User {
 
 	public User updateUser(UserUpdateRequest userUpdateRequest) {
 		this.email = userUpdateRequest.getEmail();
-		this.pw = userUpdateRequest.getPw();
 		this.name = userUpdateRequest.getName();
 		this.role = userUpdateRequest.getRole();
 		this.phoneNum = userUpdateRequest.getPhoneNum();
+		return this;
+	}
+
+	public User UpdateUserPassWord(String pw) {
+		this.pw = pw;
 		return this;
 	}
 }

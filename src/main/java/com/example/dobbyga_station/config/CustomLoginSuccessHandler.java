@@ -1,8 +1,8 @@
 package com.example.dobbyga_station.config;
 
 import com.example.dobbyga_station.constants.AuthConstants;
-import com.example.dobbyga_station.domain.User;
-import com.example.dobbyga_station.domain.UserDetail;
+import com.example.dobbyga_station.user.domain.User;
+import com.example.dobbyga_station.user.domain.UserDetail;
 import com.example.dobbyga_station.utils.TokenUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;

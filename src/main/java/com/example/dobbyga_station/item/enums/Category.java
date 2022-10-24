@@ -1,14 +1,16 @@
-package com.example.dobbyga_station.enums;
+package com.example.dobbyga_station.item.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum UserRole {
+public enum Category {
 
-	ROLE_USER("ROLE_USER"),
-	ROLE_ADMIN("ROLE_ADMIN");
+	ALL("ALL"),
+	TOP("TOP"),
+	BOTTOM("BOTTOM"),
+	ACC("ACC");
 
 	private final String value;
 }

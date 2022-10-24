@@ -1,21 +1,12 @@
-package com.example.dobbyga_station.controller;
+package com.example.dobbyga_station.user.controller;
 
 import com.example.dobbyga_station.constants.AuthConstants;
-import com.example.dobbyga_station.domain.UserRegisterRequest;
-import com.example.dobbyga_station.domain.UserRequest;
-import com.example.dobbyga_station.domain.UserResponse;
-import com.example.dobbyga_station.domain.UserUpdateRequest;
-import com.example.dobbyga_station.enums.UserRole;
-import com.example.dobbyga_station.service.UserService;
+import com.example.dobbyga_station.user.domain.*;
+import com.example.dobbyga_station.user.enums.UserRole;
+import com.example.dobbyga_station.user.service.UserService;
 import com.google.gson.Gson;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -24,18 +15,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @WebAppConfiguration
+@Transactional
 class UserControllerTest {
 
 	@Autowired
@@ -49,6 +41,11 @@ class UserControllerTest {
 	final String name = "한정택";
 	final int phoneNum = 123456789;
 	final UserRole role = UserRole.ROLE_ADMIN;
+	final Address address = Address.builder()
+		.city("인천")
+		.street("용종로")
+		.zipCode("400-000")
+		.build();
 	final String token = AuthConstants.TOKEN_TYPE + " " + "eyJyZWdEYXRlIjoxNjY2MzE3MzA3Mjc1LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9BRE1JTiIsImV4cCI6MTY2ODkwOTMwNywiZW1haWwiOiJ0dHRjazg4QGdtYWlsLmNvbSJ9.hRW02Iy6Y8O-jjAwqWfYtHSqd1F8fXD2TeJc7e2l93c";
 
 	private UserRequest userRequest() {
@@ -128,6 +125,7 @@ class UserControllerTest {
 					.name(name)
 					.phoneNum(phoneNum)
 					.role(role)
+					.address(address)
 					.build()))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
@@ -151,6 +149,7 @@ class UserControllerTest {
 					.name(name)
 					.phoneNum(phoneNum)
 					.role(role)
+					.address(address)
 					.build()))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
@@ -173,6 +172,7 @@ class UserControllerTest {
 					.name(name)
 					.phoneNum(phoneNum)
 					.role(role)
+					.address(address)
 					.build()))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
@@ -190,7 +190,7 @@ class UserControllerTest {
 		// when
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.patch(url)
-				.content(gson.toJson(UserUpdateRequest.builder().phoneNum(phoneNum).name(name).role(role)))
+				.content(gson.toJson(UserUpdateRequest.builder().phoneNum(phoneNum).name(name).role(role).address(address)))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 
@@ -208,7 +208,7 @@ class UserControllerTest {
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.patch(url)
 				.header(AuthConstants.AUTH_HEADER, token)
-				.content(gson.toJson(UserUpdateRequest.builder().phoneNum(phoneNum).name(name).role(role)))
+				.content(gson.toJson(UserUpdateRequest.builder().phoneNum(phoneNum).name(name).role(role).address(address)))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 	    
@@ -226,7 +226,7 @@ class UserControllerTest {
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.patch(url)
 				.header(AuthConstants.AUTH_HEADER, token)
-				.content(gson.toJson(UserUpdateRequest.builder().email("noEmail").phoneNum(phoneNum).name(name).role(role)))
+				.content(gson.toJson(UserUpdateRequest.builder().email("noEmail").phoneNum(phoneNum).name(name).role(role).address(address)))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 	    
@@ -244,10 +244,28 @@ class UserControllerTest {
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.patch(url)
 				.header(AuthConstants.AUTH_HEADER, token)
-				.content(gson.toJson(UserUpdateRequest.builder().email(email).phoneNum(phoneNum).name(name).role(role)))
+				.content(gson.toJson(UserUpdateRequest.builder().email(email).phoneNum(phoneNum).name(name).role(role).address(address).build()))
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 
+	    // then
+		resultActions.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void 패스워드수정성공() throws Exception {
+	    // given
+		final String url = "/api/user/updatePassword";
+		registerUser();
+	    
+	    // when
+		ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders.patch(url)
+				.header(AuthConstants.AUTH_HEADER, token)
+				.content(gson.toJson(UserUpdateRequest.builder().email(email).pw("newPw").build()))
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+	    
 	    // then
 		resultActions.andExpect(status().isOk());
 	}
@@ -261,7 +279,6 @@ class UserControllerTest {
 	    // when
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders.get(url)
-				.header(AuthConstants.AUTH_HEADER, token)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 
