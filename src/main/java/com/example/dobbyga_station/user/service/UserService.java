@@ -47,7 +47,7 @@ public class UserService {
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
 		User user = userRepository.findByEmail(userUpdateRequest.getEmail())
 			.map(u -> u.updateUser(userUpdateRequest))
-			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+			.orElseThrow(() -> new CustomException(ErrorResult.USER_NOT_FOUND));
 
 		return UserResponse.builder()
 			.id(user.getId())
@@ -61,7 +61,7 @@ public class UserService {
 	public UserResponse updateUserPassWord(UserUpdateRequest userUpdateRequest) {
 		User user = userRepository.findByEmail(userUpdateRequest.getEmail())
 			.map(u -> u.UpdateUserPassWord(new BCryptPasswordEncoder().encode(userUpdateRequest.getPw())))
-			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+			.orElseThrow(() -> new CustomException(ErrorResult.USER_NOT_FOUND));
 
 		return UserResponse.builder()
 			.id(user.getId())
@@ -94,12 +94,12 @@ public class UserService {
 				.phoneNum(u.getPhoneNum())
 				.role(u.getRole())
 				.build())
-			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+			.orElseThrow(() -> new CustomException(ErrorResult.USER_NOT_FOUND));
 	}
 
 	public void findPassword(String email) {
 		User user = userRepository.findByEmail(email)
-			.orElseThrow(() -> new CustomException(ErrorResult.User_NOT_FOUND));
+			.orElseThrow(() -> new CustomException(ErrorResult.USER_NOT_FOUND));
 
 		// 새로운패스워드생성
 		String newPw = makeRandomPw();

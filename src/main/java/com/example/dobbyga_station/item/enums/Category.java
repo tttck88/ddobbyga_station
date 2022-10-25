@@ -10,6 +10,7 @@ public enum Category {
 	ALL("ALL"),
 	TOP("TOP"),
 	BOTTOM("BOTTOM"),
+	ETC("ETC"),
 	ACC("ACC");
 
 	private final String value;

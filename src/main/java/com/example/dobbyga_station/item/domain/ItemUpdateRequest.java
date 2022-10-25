@@ -1,25 +1,27 @@
 package com.example.dobbyga_station.item.domain;
 
 import com.example.dobbyga_station.item.enums.Category;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @RequiredArgsConstructor
+@NoArgsConstructor(force = true)
 @Getter
 @Builder
-@NoArgsConstructor(force = true)
-public class ItemRegisterRequest {
+public class ItemUpdateRequest {
 
 	@NotNull
+	private final Long id;
+
 	private final String name;
 
-	@NotNull
-	private final Integer price;
+	private final int price;
 
-	@NotNull
-	private final Integer stockQuantity;
+	private final int stockQuantity;
 
-	@NotNull
 	private final Category category;
 }

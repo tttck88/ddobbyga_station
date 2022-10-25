@@ -28,4 +28,12 @@ public class Item {
 
 	@Column(nullable = false)
 	private Category category;
+
+	public Item updateItem(ItemUpdateRequest itemUpdateRequest) {
+		this.name = itemUpdateRequest.getName();
+		this.price = itemUpdateRequest.getPrice();
+		this.stockQuantity = itemUpdateRequest.getStockQuantity();
+		this.category = itemUpdateRequest.getCategory();
+		return this;
+	}
 }

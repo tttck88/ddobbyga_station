@@ -120,7 +120,7 @@ class UserServiceTest {
 			() -> target.updateUser(userUpdateRequest()));
 	    
 	    // then
-		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.User_NOT_FOUND);
+		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.USER_NOT_FOUND);
 	}
 	
 	@Test
@@ -162,7 +162,7 @@ class UserServiceTest {
 			() -> target.findUser(email));
 	    
 	    // then
-		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.User_NOT_FOUND);
+		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.USER_NOT_FOUND);
 	}
 	
 	@Test
@@ -188,7 +188,7 @@ class UserServiceTest {
 			() -> target.findPassword(email));
 
 		// then
-		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.User_NOT_FOUND);
+		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.USER_NOT_FOUND);
 	}
 	
 	@Test

@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus;
 public enum ErrorResult {
 
 	DUPLICATE_USER_REGISTER(HttpStatus.BAD_REQUEST, "Duplicated Membership Register Request"),
-	User_NOT_FOUND(HttpStatus.NOT_FOUND, "Membership Not found"),
-	UNKNOWN_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception");
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "Membership Not found"),
+	UNKNOWN_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception"),
+	ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Item Not Found");
 
 	private final HttpStatus httpStatus;
 	private final String message;
