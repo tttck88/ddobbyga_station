@@ -39,7 +39,7 @@ class UserControllerTest {
 	final String email = "tttck88@gmail.com";
 	final String pw = "123456789";
 	final String name = "한정택";
-	final int phoneNum = 123456789;
+	final String phoneNum = "123456789";
 	final UserRole role = UserRole.ROLE_ADMIN;
 	final Address address = Address.builder()
 		.city("인천")

@@ -1,5 +1,7 @@
 package com.example.dobbyga_station.item.domain;
 
+import com.example.dobbyga_station.exception.CustomException;
+import com.example.dobbyga_station.exception.ErrorResult;
 import com.example.dobbyga_station.item.enums.Category;
 import lombok.*;
 
@@ -35,5 +37,14 @@ public class Item {
 		this.stockQuantity = itemUpdateRequest.getStockQuantity();
 		this.category = itemUpdateRequest.getCategory();
 		return this;
+	}
+
+	public void removeStock(int count) {
+		int restStock = this.getStockQuantity() - count;
+		if(restStock < 0) {
+			throw new CustomException(ErrorResult.NOT_ENOUGH_STOCK);
+		} else {
+			this.stockQuantity = restStock;
+		}
 	}
 }

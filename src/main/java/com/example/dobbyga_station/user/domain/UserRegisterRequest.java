@@ -27,7 +27,7 @@ public class UserRegisterRequest {
 	private final UserRole role;
 
 	@NotNull
-	private final Integer phoneNum;
+	private final String phoneNum;
 
 	private final Address address;
 }

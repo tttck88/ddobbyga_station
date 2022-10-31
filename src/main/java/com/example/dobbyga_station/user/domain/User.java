@@ -1,5 +1,6 @@
 package com.example.dobbyga_station.user.domain;
 
+import com.example.dobbyga_station.order.domain.Order;
 import com.example.dobbyga_station.user.enums.UserRole;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "USER")
@@ -18,7 +21,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "item_id", nullable = false)
+	@Column(name = "user_id", nullable = false)
 	private Long id;
 
 	@Column(nullable = false, unique = true)
@@ -33,10 +36,13 @@ public class User {
 	private UserRole role;
 
 	@Column(nullable = false)
-	private int phoneNum;
+	private String phoneNum;
 
 	@Embedded
 	private Address address;
+
+	@OneToMany(mappedBy = "user")
+	private List<Order> orders = new ArrayList<>();
 
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)

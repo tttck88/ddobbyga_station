@@ -16,6 +16,6 @@ public class UserRequest {
 	private final String pw;
 	private final String name;
 	private final UserRole role;
-	private final int phoneNum;
+	private final String phoneNum;
 	private final Address address;
 }
