@@ -10,14 +10,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtTokenInterceptor())
-			.addPathPatterns("/api/user/update")
-			.addPathPatterns("/api/user/detail")
-			.addPathPatterns("/api/user/list");
-	}
+//		registry.addInterceptor(jwtTokenInterceptor())
+//			.addPathPatterns("/api/user/update")
+//			.addPathPatterns("/api/user/detail")
+//			.addPathPatterns("/api/user/list");
 
+		registry.addInterceptor(loggingInterceptor())
+			.addPathPatterns("/**");
+
+	}
 	@Bean
 	public JwtTokenInterceptor jwtTokenInterceptor() {
 		return new JwtTokenInterceptor();
+	}
+
+	@Bean
+	public LoggingInterceptor loggingInterceptor() {
+		return new LoggingInterceptor();
 	}
 }
