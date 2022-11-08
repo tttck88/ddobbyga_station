@@ -2,11 +2,13 @@ package com.example.dobbyga_station.config;
 
 import com.example.dobbyga_station.constants.AuthConstants;
 import com.example.dobbyga_station.utils.TokenUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class JwtTokenInterceptor implements HandlerInterceptor {
 
 	@Override
