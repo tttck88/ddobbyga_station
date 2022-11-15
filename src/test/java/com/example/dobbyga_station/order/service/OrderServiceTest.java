@@ -1,11 +1,13 @@
 package com.example.dobbyga_station.order.service;
 
 import com.example.dobbyga_station.delivery.domain.Delivery;
+import com.example.dobbyga_station.delivery.enums.DeliveryStatus;
 import com.example.dobbyga_station.exception.CustomException;
 import com.example.dobbyga_station.exception.ErrorResult;
 import com.example.dobbyga_station.item.domain.Item;
 import com.example.dobbyga_station.item.enums.Category;
 import com.example.dobbyga_station.item.respository.ItemRepository;
+import com.example.dobbyga_station.order.domain.Order;
 import com.example.dobbyga_station.order.domain.OrderItemRequest;
 import com.example.dobbyga_station.order.repository.OrderRepository;
 import com.example.dobbyga_station.user.domain.Address;
@@ -132,9 +134,42 @@ class OrderServiceTest {
 	    // then
 		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.NOT_ENOUGH_STOCK);
 	}
+	
+	@Test
+	public void 상품주문성공() {
+	    // given
+		User user = createUser();
+		Item item = createItem(-1L, "상품1", 1000, 6, Category.TOP);
 
+		doReturn(Optional.of(user)).when(userRepository).findById(-1L);
+		doReturn(Optional.of(item)).when(itemRepository).findById(-1L);
 
-	// 주문취소 테스트
+		Delivery delivery = Delivery.builder()
+			.address(user.getAddress())
+			.status(DeliveryStatus.READY)
+			.build();
+
+		List<OrderItemRequest> orderItemRequests = Arrays.asList(OrderItemRequest.builder().itemId(item.getId()).count(6).build());
+
+	    // when
+		final Order result = target.order(-1L, delivery, orderItemRequests);
+
+		// then
+		assertThat(result).isNotNull();
+		assertThat(result.getUser().getId()).isEqualTo(user.getId());
+		assertThat(result.getOrderItems().size()).isEqualTo(orderItemRequests.size());
+	}
+
+	@Test
+	public void 주문취소실패_유요한주문번호가아님() {
+	    // given
+
+		
+	    
+	    // when
+	    
+	    // then
+	}
 
 }
 

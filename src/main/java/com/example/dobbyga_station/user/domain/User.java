@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -20,7 +20,7 @@ import java.util.List;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id", nullable = false)
 	private Long id;
 
@@ -40,9 +40,6 @@ public class User {
 
 	@Embedded
 	private Address address;
-
-	@OneToMany(mappedBy = "user")
-	private List<Order> orders = new ArrayList<>();
 
 	@CreationTimestamp
 	@Column(nullable = false, updatable = false)

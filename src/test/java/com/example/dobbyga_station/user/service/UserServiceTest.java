@@ -50,6 +50,15 @@ class UserServiceTest {
 			.build();
 	}
 
+	private UserFindPwRequest userFindPwRequest() {
+		return UserFindPwRequest.builder()
+			.email(email)
+			.pw(pw)
+			.name(name)
+			.phoneNum(phoneNum)
+			.build();
+	}
+
 	private UserRegisterRequest userRegisterRequest() {
 		return UserRegisterRequest.builder()
 			.email(email)
@@ -179,25 +188,51 @@ class UserServiceTest {
 	}
 	
 	@Test
-	public void 회원패스워드찾기실패_존재하지않음() {
+	public void 회원패스워드찾기실패_이메일이존재하지않음() {
 	    // given
 		doReturn(Optional.empty()).when(userRepository).findByEmail(email);
 	    
 	    // when
 		CustomException exception = assertThrows(CustomException.class,
-			() -> target.findPassword(email));
+			() -> target.findPassword(userFindPwRequest()));
 
 		// then
 		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.USER_NOT_FOUND);
 	}
-	
+
+	@Test
+	public void 회원패스워드찾기실패_이름이다름() {
+		// given
+		doReturn(Optional.of(User.builder().email(email).name("틀린이름").build())).when(userRepository).findByEmail(email);
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> target.findPassword(userFindPwRequest()));
+
+		// then
+		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.USER_NOT_FOUND);
+	}
+
+	@Test
+	public void 회원패스워드찾기실패_핸드폰번호다름() {
+		// given
+		doReturn(Optional.of(User.builder().email(email).name(name).phoneNum("010").build())).when(userRepository).findByEmail(email);
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> target.findPassword(userFindPwRequest()));
+
+		// then
+		assertThat(exception.getErrorResult()).isEqualTo(ErrorResult.USER_NOT_FOUND);
+	}
+
 	@Test
 	public void 패스워드찾기성공() {
 	    // given
-		doReturn(Optional.of(User.builder().email(email).name(name).build())).when(userRepository).findByEmail(email);
+		doReturn(Optional.of(User.builder().email(email).name(name).phoneNum(phoneNum).build())).when(userRepository).findByEmail(email);
 	    
 	    // when
-		target.findPassword(email);
+		target.findPassword(userFindPwRequest());
 	    
 	    // then
 	}

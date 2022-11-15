@@ -45,6 +45,15 @@ public class UserController {
 	ResponseEntity<UserResponse> userDetail(@RequestParam final String email) {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.findUser(email));
 	}
+
+	// id, pw 찾기
+	@PostMapping(value = "/api/user/pw")
+	ResponseEntity<UserResponse> findUserPw(@RequestBody @Valid final UserFindPwRequest userFindPwRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.findPassword(userFindPwRequest));
+	}
+
+	// 회원 로그아웃
+
 }
 
 

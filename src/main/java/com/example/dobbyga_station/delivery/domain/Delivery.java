@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Delivery {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "delivery_id", nullable = false)
 	private Long id;
 

@@ -97,21 +97,37 @@ public class UserService {
 			.orElseThrow(() -> new CustomException(ErrorResult.USER_NOT_FOUND));
 	}
 
-	public void findPassword(String email) {
-		User user = userRepository.findByEmail(email)
+	public UserResponse findPassword(UserFindPwRequest userFindPwRequest) {
+		User user = userRepository.findByEmail(userFindPwRequest.getEmail())
 			.orElseThrow(() -> new CustomException(ErrorResult.USER_NOT_FOUND));
+
+		if(!userFindPwRequest.getName().equals(user.getName())) {
+			throw new CustomException(ErrorResult.USER_NOT_FOUND);
+		}
+
+		if(!userFindPwRequest.getPhoneNum().equals(user.getPhoneNum())) {
+			throw new CustomException(ErrorResult.USER_NOT_FOUND);
+		}
 
 		// 새로운패스워드생성
 		String newPw = makeRandomPw();
 
 		// 패스워드수정
 		updateUserPassWord(UserUpdateRequest.builder()
-			.email(email)
+			.email(userFindPwRequest.getEmail())
 			.pw(newPw)
 			.build());
 
 		// 수정된패스워드전송
-		sendNewPwToEmail(email, user.getName() ,newPw);
+		sendNewPwToEmail(userFindPwRequest.getEmail(), user.getName() ,newPw);
+
+		return UserResponse.builder()
+			.id(user.getId())
+			.email(user.getEmail())
+			.name(user.getName())
+			.phoneNum(user.getPhoneNum())
+			.role(user.getRole())
+			.build();
 	}
 
 	private String makeRandomPw() {
