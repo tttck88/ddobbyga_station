@@ -1,5 +1,6 @@
 package com.example.dobbyga_station.user.domain;
 
+import com.example.dobbyga_station.common.BaseEntity;
 import com.example.dobbyga_station.order.domain.Order;
 import com.example.dobbyga_station.user.enums.UserRole;
 import lombok.*;
@@ -17,7 +18,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,14 +41,6 @@ public class User {
 
 	@Embedded
 	private Address address;
-
-	@CreationTimestamp
-	@Column(nullable = false, updatable = false)
-	private LocalDateTime createdAt;
-
-	@UpdateTimestamp
-	@Column()
-	private LocalDateTime updatedAt;
 
 	public User updateUser(UserUpdateRequest userUpdateRequest) {
 		this.email = userUpdateRequest.getEmail();

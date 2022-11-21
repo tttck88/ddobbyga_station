@@ -23,7 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+		web.ignoring()
+			.antMatchers("/h2-console/**", "/favicon.ico")
+			.requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().authorizeRequests()
 			.anyRequest().permitAll() // 모든 요청에 대한 접근을 허용함
 			.and()
+			.logout().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지 않음
 			.and()
 			.formLogin().disable() // 폼로그인을 사용하지않음

@@ -1,5 +1,6 @@
 package com.example.dobbyga_station.order.domain;
 
+import com.example.dobbyga_station.common.BaseEntity;
 import com.example.dobbyga_station.delivery.domain.Delivery;
 import com.example.dobbyga_station.order.enums.OrderStatus;
 import com.example.dobbyga_station.orderItem.domain.OrderItem;
@@ -17,7 +18,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +29,7 @@ public class Order {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> orderItems = new ArrayList<>();
 

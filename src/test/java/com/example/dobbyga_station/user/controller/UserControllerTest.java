@@ -432,6 +432,40 @@ class UserControllerTest {
 	    // then
 		resultActions.andExpect(status().isNotFound());
 	}
+	
+	@Test
+	public void 회원pw찾기실패_번호가다름() throws Exception {
+	    // given
+		final String url = "/api/user/pw";
+	    registerUser();
+
+	    // when
+		final ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders.post(url)
+				.content(gson.toJson(UserRegisterRequest.builder().email(email).name(name).phoneNum("틀린번호").build()))
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+	    
+	    // then
+		resultActions.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void 회원pw찾기성공() throws Exception {
+	    // given
+		final String url = "/api/user/pw";
+		registerUser();
+
+	    // when
+		final ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders.post(url)
+				.content(gson.toJson(UserRegisterRequest.builder().email(email).name(name).phoneNum(phoneNum).build()))
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+	    
+	    // then
+		resultActions.andExpect(status().isOk());
+	}
 }
 
 

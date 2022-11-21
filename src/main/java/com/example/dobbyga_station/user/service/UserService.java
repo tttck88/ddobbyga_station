@@ -58,6 +58,7 @@ public class UserService {
 			.build();
 	}
 
+	@Transactional
 	public UserResponse updateUserPassWord(UserUpdateRequest userUpdateRequest) {
 		User user = userRepository.findByEmail(userUpdateRequest.getEmail())
 			.map(u -> u.UpdateUserPassWord(new BCryptPasswordEncoder().encode(userUpdateRequest.getPw())))
